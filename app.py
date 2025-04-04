@@ -238,4 +238,4 @@ def cancel_flight(record_locator, meta_data_token=None, meta_data=None):
     return "Flight canceled successfully.", {}
 
 if __name__ == '__main__':
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    app.run(port=5000)
