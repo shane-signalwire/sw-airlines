@@ -195,7 +195,7 @@ def book_flight(from_city, to_city, departure_date, return_date, first_name, las
         full_name=full_name,
         contact_number=contact_number,
         seat_pref=seat_pref,
-        seat_number=seat
+        seat_number=seat,
         airfare_price=price
     )
     
