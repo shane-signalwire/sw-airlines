@@ -55,6 +55,7 @@ class Passenger(db.Model):
     contact_number = db.Column(db.String(20), nullable=False)
     seat_pref = db.Column(db.String(20), nullable=False)
     seat_number = db.Column(db.String(3), nullable=False)
+    airfare_price = db.Column(db.String(10), nullable=False)
 
 # Create tables
 with app.app_context():
@@ -186,16 +187,19 @@ def book_flight(from_city, to_city, departure_date, return_date, first_name, las
     confirmation.append("\nPassenger Information:")
 
     seat = assign_seat(seat_pref)
+    price = generate_price(seat_pref, return_date=return_date)
+    confirmation.append(f"Total price: ${price:.2f}")
+
     new_passenger = Passenger(
         flight_id=new_flight.id,
         full_name=full_name,
         contact_number=contact_number,
         seat_pref=seat_pref,
         seat_number=seat
+        airfare_price=price
     )
     
-    price = generate_price(seat_pref, return_date=return_date)
-    confirmation.append(f"Total price: ${price:.2f}")
+ 
 
     db.session.add(new_passenger)
     confirmation.append(f"- {full_name}: {seat_pref.capitalize()} seat {seat}")
