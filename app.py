@@ -57,8 +57,8 @@ class Passenger(db.Model):
     seat_number = db.Column(db.String(3), nullable=False)
 
 # Create tables
-#with app.app_context():
-db.create_all()
+with app.app_context():
+    db.create_all()
 
 def generate_record_locator():
     return ''.join(random.choices('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', k=6))
