@@ -11,19 +11,21 @@ from sqlalchemy.orm import relationship
 load_dotenv()
 
 ## POSTGRES CONFIGIGURATION ##
-PGUSER = os.getenv("PGUSER")
-PGPASSWORD = os.getenv("PGPASSWORD")
-PGHOST = os.getenv("PGHOST")
-PGPORT = os.getenv("PGPORT")
-PGDATABASE = os.getenv("PGDATABASE")
+#PGUSER = os.getenv("PGUSER")
+#PGPASSWORD = os.getenv("PGPASSWORD")
+#PGHOST = os.getenv("PGHOST")
+#PGPORT = os.getenv("PGPORT")
+#PGDATABASE = os.getenv("PGDATABASE")
+DB_CONNECTION_URL = os.getenv("DB_CONNECTION_URL")
 ##
 
-if not PGUSER or not PGPASSWORD or not PGHOST or not PGPORT or not PGDATABASE:
-    raise ValueError("Missing PostgreSQL environment variables")
+if not DB_CONNECTION_URL:
+    raise ValueError("Missing DB_CONNECTION_URL environment variable")
 
 app = Flask(__name__)
 # Configure SQLAlchemy
-app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST}:{PGPORT}/{PGDATABASE}"
+#app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST}:{PGPORT}/{PGDATABASE}"
+app.config['SQLALCHEMY_DATABASE_URI'] = DB_CONNECTION_URL
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -54,7 +56,7 @@ class Passenger(db.Model):
 
 # Create tables
 #with app.app_context():
-    db.create_all()
+db.create_all()
 
 def generate_record_locator():
     return ''.join(random.choices('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', k=6))
