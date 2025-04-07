@@ -103,6 +103,25 @@ def validate_iata_code(code):
     # IATA codes are 3 alphabetic characters
     return len(code) == 3 and code.isalpha() and code.upper() == code
 
+# Generate a price for the flight based on seat preference and if there i sa return date
+def generate_price(seat_pref, return_date=None):
+    total_cost = 0
+    base_price = 200
+
+    if return_date:
+        total_cost = base_price * 2
+    else:
+        total_cost = base_price
+
+    if seat_pref == "window":
+        total_cost = total_cost * 1.2
+    elif seat_pref == "aisle":
+        total_cost = total_cost * 1.5
+    else:
+        total_cost = total_cost * 1.1
+    
+    return total_cost
+
 @swaig.endpoint("Book a flight", 
     from_city=SWAIGArgument("string", "Origin airport IATA code (3 letters)", required=True),
     to_city=SWAIGArgument("string", "Destination airport IATA code (3 letters)", required=True),
@@ -145,7 +164,7 @@ def book_flight(from_city, to_city, departure_date, return_date, first_name, las
     # Remaining booking logic
     locator = generate_record_locator()
     aircraft = random_aircraft()
-    
+
     new_flight = Flight(
         record_locator=locator,
         from_city=from_city,
@@ -174,6 +193,10 @@ def book_flight(from_city, to_city, departure_date, return_date, first_name, las
         seat_pref=seat_pref,
         seat_number=seat
     )
+    
+    price = generate_price(seat_pref, return_date=return_date)
+    confirmation.append(f"Total price: ${price:.2f}")
+
     db.session.add(new_passenger)
     confirmation.append(f"- {full_name}: {seat_pref.capitalize()} seat {seat}")
 
