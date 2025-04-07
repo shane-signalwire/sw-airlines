@@ -58,7 +58,14 @@ class Passenger(db.Model):
 
 # Create tables
 with app.app_context():
-    db.create_all()
+    # Check if tables exist before creating them
+    inspector = db.inspect(db.engine)
+
+    if not inspector.has_table('flights'):
+        Flight.__table__.create(db.engine)
+    
+    if not inspector.has_table('passengers'):
+        Passenger.__table__.create(db.engine)
 
 def generate_record_locator():
     return ''.join(random.choices('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', k=6))
