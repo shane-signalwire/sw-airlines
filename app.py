@@ -17,6 +17,8 @@ load_dotenv()
 #PGPORT = os.getenv("PGPORT")
 #PGDATABASE = os.getenv("PGDATABASE")
 DB_CONNECTION_URL = os.getenv("DB_CONNECTION_URL")
+if DB_CONNECTION_URL and DB_CONNECTION_URL.startswith('postgres://'):
+    DB_CONNECTION_URL = DB_CONNECTION_URL.replace('postgres://', 'postgresql://', 1) # Replace postgres with postgresql for sqlalchemy
 ##
 
 if not DB_CONNECTION_URL:
