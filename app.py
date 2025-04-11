@@ -107,7 +107,7 @@ def validate_iata_code(code):
 # Generate a price for the flight based on seat preference and if there i sa return date
 def generate_price(seat_pref, return_date=None):
     total_cost = 0
-    base_price = 200
+    base_price = 200.00
 
     if return_date:
         total_cost = base_price * 2
@@ -121,7 +121,7 @@ def generate_price(seat_pref, return_date=None):
     else:
         total_cost = total_cost * 1.1
     
-    return total_cost
+    return round(total_cost, 2)
 
 @swaig.endpoint("Book a flight", 
     from_city=SWAIGArgument("string", "Origin airport IATA code (3 letters)", required=True),
