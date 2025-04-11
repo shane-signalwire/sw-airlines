@@ -37,7 +37,7 @@ swaig = SWAIG(app)
 class Flight(db.Model):
     __tablename__ = 'flights'
     
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     record_locator = db.Column(db.String(6), unique=True, nullable=False)
     from_city = db.Column(db.String(3), nullable=False)  # Changed to 3 chars for IATA code
     to_city = db.Column(db.String(3), nullable=False)    # Changed to 3 chars for IATA code
@@ -49,7 +49,7 @@ class Flight(db.Model):
 class Passenger(db.Model):
     __tablename__ = 'passengers'
     
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     flight_id = db.Column(db.Integer, db.ForeignKey('flights.id'), nullable=False)
     full_name = db.Column(db.String(100), nullable=False)
     contact_number = db.Column(db.String(20), nullable=False)
